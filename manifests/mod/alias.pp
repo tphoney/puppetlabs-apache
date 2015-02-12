@@ -9,6 +9,7 @@ class apache::mod::alias(
       true    => '/usr/share/httpd/icons',
       default => '/var/www/icons',
     },
+    'Suse' => '/var/www/icons',
     'freebsd' => '/usr/local/www/apache22/icons',
   }
   apache::mod { 'alias': }

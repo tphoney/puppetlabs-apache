@@ -65,7 +65,7 @@ define apache::mpm (
         mpm_module => $mpm
       }
     }
-    'redhat': {
+    'redhat', 'Suse' : {
       # so we don't fail
     }
     default: {

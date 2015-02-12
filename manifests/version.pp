@@ -30,6 +30,11 @@ class apache::version {
     'FreeBSD': {
       $default = '2.2'
     }
+    'Suse': {
+      if $::operatingsystem == 'SLES' {
+        $default = '2.2'
+      }
+    }
     default: {
       fail("Class['apache::version']: Unsupported osfamily: ${::osfamily}")
     }

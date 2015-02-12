@@ -141,6 +141,114 @@ class apache::params inherits ::apache::version {
       'base_rules/modsecurity_crs_59_outbound_blocking.conf',
       'base_rules/modsecurity_crs_60_correlation.conf'
     ]
+
+  } elsif $::operatingsystem == 'SLES' {
+    $user                 = 'apache'
+    $group                = 'apache'
+    $root_group           = 'root'
+    $apache_name          = 'apache2'
+    $service_name         = 'apache2'
+    $httpd_dir            = '/etc/apache2'
+    $server_root          = '/etc/apache2'
+    $conf_dir             = "${httpd_dir}"
+    $confd_dir            = "${httpd_dir}/conf.d"
+    $mod_dir              = "${httpd_dir}/conf.d"
+    $mod_enable_dir       = undef
+    $vhost_dir            = "${httpd_dir}/conf.d"
+    $vhost_enable_dir     = undef
+    $conf_file            = 'httpd.conf'
+    $ports_file           = "${conf_dir}/ports.conf"
+    $logroot              = '/var/log/httpd'
+    $logroot_mode         = undef
+    $lib_path             = '/usr/lib/apache2/'
+    $mpm_module           = 'prefork'
+    $dev_packages         = 'httpd-devel'
+    $default_ssl_cert     = '/etc/pki/tls/certs/localhost.crt'
+    $default_ssl_key      = '/etc/pki/tls/private/localhost.key'
+    $ssl_certs_dir        = '/etc/pki/tls/certs'
+    $passenger_conf_file  = 'passenger_extra.conf'
+    $passenger_conf_package_file = 'passenger.conf'
+    $passenger_root       = undef
+    $passenger_ruby       = undef
+    $passenger_default_ruby = undef
+    $suphp_addhandler     = 'php5-script'
+    $suphp_engine         = 'off'
+    $suphp_configpath     = undef
+    # NOTE: The module for Shibboleth is not available to RH/CentOS without an additional repository. http://wiki.aaf.edu.au/tech-info/sp-install-guide
+    $mod_packages         = {
+      'auth_kerb'   => 'mod_auth_kerb',
+      'authnz_ldap' => $::apache::version::distrelease ? {
+        '7'     => 'mod_ldap',
+        default => 'mod_authz_ldap',
+      },
+      'fastcgi'     => 'mod_fastcgi',
+      'fcgid'       => 'mod_fcgid',
+      'pagespeed'   => 'mod-pagespeed-stable',
+      'passenger'   => 'mod_passenger',
+      'perl'        => 'mod_perl',
+      'php5'        => $::apache::version::distrelease ? {
+        '5'     => 'php53',
+        default => 'php',
+      },
+      'proxy_html'  => 'mod_proxy_html',
+      'python'      => 'mod_python',
+      'security'    => 'mod_security',
+      'shibboleth'  => 'shibboleth',
+      'ssl'         => 'mod_ssl',
+      'wsgi'        => 'mod_wsgi',
+      'dav_svn'     => 'mod_dav_svn',
+      'suphp'       => 'mod_suphp',
+      'xsendfile'   => 'mod_xsendfile',
+      'nss'         => 'mod_nss',
+      'shib2'       => 'shibboleth',
+    }
+    $mod_libs             = {
+      'php5' => 'libphp5.so',
+      'nss'  => 'libmodnss.so',
+    }
+    $conf_template        = 'apache/httpd.conf.erb'
+    $keepalive            = 'Off'
+    $keepalive_timeout    = 15
+    $max_keepalive_requests = 100
+    $fastcgi_lib_path     = undef
+    $mime_support_package = 'shared-mime-info'
+    $mime_types_config    = '/etc/mime.types'
+    $docroot              = '/srv/www/'
+    $error_documents_path = $::apache::version::distrelease ? {
+      '7'     => '/usr/share/httpd/error',
+      default => '/var/www/error'
+    }
+    $wsgi_socket_prefix = undef
+    $modsec_crs_package   = 'mod_security_crs'
+    $modsec_crs_path      = '/usr/lib/modsecurity.d'
+    $modsec_dir           = '/etc/httpd/modsecurity.d'
+    $modsec_default_rules = [
+      'base_rules/modsecurity_35_bad_robots.data',
+      'base_rules/modsecurity_35_scanners.data',
+      'base_rules/modsecurity_40_generic_attacks.data',
+      'base_rules/modsecurity_41_sql_injection_attacks.data',
+      'base_rules/modsecurity_50_outbound.data',
+      'base_rules/modsecurity_50_outbound_malware.data',
+      'base_rules/modsecurity_crs_20_protocol_violations.conf',
+      'base_rules/modsecurity_crs_21_protocol_anomalies.conf',
+      'base_rules/modsecurity_crs_23_request_limits.conf',
+      'base_rules/modsecurity_crs_30_http_policy.conf',
+      'base_rules/modsecurity_crs_35_bad_robots.conf',
+      'base_rules/modsecurity_crs_40_generic_attacks.conf',
+      'base_rules/modsecurity_crs_41_sql_injection_attacks.conf',
+      'base_rules/modsecurity_crs_41_xss_attacks.conf',
+      'base_rules/modsecurity_crs_42_tight_security.conf',
+      'base_rules/modsecurity_crs_45_trojans.conf',
+      'base_rules/modsecurity_crs_47_common_exceptions.conf',
+      'base_rules/modsecurity_crs_49_inbound_blocking.conf',
+      'base_rules/modsecurity_crs_50_outbound.conf',
+      'base_rules/modsecurity_crs_59_outbound_blocking.conf',
+      'base_rules/modsecurity_crs_60_correlation.conf'
+    ]
+
+
+
+
   } elsif $::osfamily == 'Debian' {
     $user                = 'www-data'
     $group               = 'www-data'
